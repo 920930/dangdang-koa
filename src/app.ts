@@ -10,7 +10,7 @@ const app = new Koa();
 app.use(koaBody());
 app.use(KoaJson());
 
-console.log(db.getConfig('portd'))
+console.log(db.getConfig())
 
 app.use(errorMiddleware)
 RouterLoader.routerLoader.init(app)

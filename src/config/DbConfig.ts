@@ -1,4 +1,4 @@
-type DBConfig = {
+type TDBConfig = {
   host: string;
   user: string;
   password: string;
@@ -7,12 +7,12 @@ type DBConfig = {
 }
 
 interface EnvConfig {
-  dev: DBConfig;
-  prod: DBConfig;
+  dev: TDBConfig;
+  prod: TDBConfig;
 }
 
-class Db {
-  static db = new Db()
+class DbConfig {
+  static db = new DbConfig()
   env: keyof EnvConfig = 'dev'
   config: EnvConfig = {
     dev: {
@@ -33,16 +33,15 @@ class Db {
   constructor(){
     this.env = process.env.NODE_ENV === 'dev' ? 'dev' : 'prod'
   }
-  // getConfig(): DBConfig;
-  getConfig(key = ''): DBConfig | string | number{
+  getConfig(key = ''): TDBConfig | string | number{
     if(this.isDbConfig(key)) {
       return this.config[this.env][key]
     }
     return this.config[this.env]
   }
-  isDbConfig(key: string): key is keyof DBConfig{
+  isDbConfig(key: string): key is keyof TDBConfig{
     return ['host', 'user', 'password', 'database', 'port'].includes(key)
   }
 }
 
-export const { db } = Db;
+export const { db } = DbConfig;
