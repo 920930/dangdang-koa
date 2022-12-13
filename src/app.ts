@@ -4,13 +4,10 @@ import KoaJson from 'koa-json';
 
 import RouterLoader from './common/RouterLoader';
 import errorMiddleware from './middleware/error.middleware';
-import { db } from './config/db';
 
 const app = new Koa();
 app.use(koaBody());
 app.use(KoaJson());
-
-console.log(db.getConfig())
 
 app.use(errorMiddleware)
 RouterLoader.routerLoader.init(app)
