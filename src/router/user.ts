@@ -1,16 +1,40 @@
 import KoaRouter from 'koa-router';
-import { success, fail } from '../common/result'
+import { Sequelize } from 'sequelize';
+import { success, fail } from '../common/result';
+import { User } from '../model/user';
 
 const router = new KoaRouter();
 
 router.prefix('/user');
 
-router.get('/', (ctx) => {
-  ctx.body = success([{id: 1}, {id: 2}])
+router.get('/', async (ctx) => {
+  // 聚合查询
+  // await User.findAll({
+  //   raw: true,
+  //   group: 'address',
+  //   attributes: ['address', [Sequelize.fn('count', Sequelize.col('valid')), 'countAddress']]
+  // })
+  // 以上查询的时间是设定一个分类组address, 限定字段address, 以及聚合统计count出来valid数量，别名为countAddress
+  // 原生代码入戏：
+  // select address, count('valid') as countAddress from user group by address
+  const users = await User.findAll({ raw: true })
+  ctx.body = success(users)
 })
-router.get('/:id', (ctx) => {
+router.post('/store', async (ctx) => {
+  const { name, password, address } = ctx.request.body;
+  console.log(name, password, address)
+  const user = await User.create({
+    name, password, address
+  })
+  ctx.body = success(user)
+})
+router.get('/:id', async (ctx) => {
   const { id } = ctx.params;
-  ctx.body = id
+  const user = await User.findOne({
+    where: { id },
+    raw: true,
+  })
+  ctx.body = success(user)
 })
 
 export default router

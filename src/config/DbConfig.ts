@@ -17,8 +17,8 @@ class DbConfig {
   config: EnvConfig = {
     dev: {
       host: 'localhost',
-      user: 'admin',
-      password: 'admin',
+      user: 'root',
+      password: '123456',
       database: 'dangdang',
       port: 3306,
     },
