@@ -1,7 +1,8 @@
 import KoaRouter from 'koa-router';
 import { Sequelize } from 'sequelize';
 import { success, fail } from '../common/result';
-import { User } from '../model/user';
+import { First } from '../module/class/model/first';
+import { User } from '../module/user/model/user';
 
 const router = new KoaRouter();
 
@@ -17,12 +18,11 @@ router.get('/', async (ctx) => {
   // 以上查询的时间是设定一个分类组address, 限定字段address, 以及聚合统计count出来valid数量，别名为countAddress
   // 原生代码入戏：
   // select address, count('valid') as countAddress from user group by address
-  const users = await User.findAll({ raw: true })
+  const users = await First.findAll({ raw: true })
   ctx.body = success(users)
 })
 router.post('/store', async (ctx) => {
   const { name, password, address } = ctx.request.body;
-  console.log(name, password, address)
   const user = await User.create({
     name, password, address
   })
