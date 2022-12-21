@@ -10,6 +10,8 @@ export default class ControllerRouter {
 
   async init(app: Koa){
     this.app = app
+    // this.app.context.rootRouter.prefix('')
+    this.app.context.rootRouter = this.router;
     this.app.use(this.router.routes())
     const list = this.getFilePath();
     this.getRouteInfo(list);

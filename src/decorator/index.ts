@@ -1,11 +1,18 @@
 import 'reflect-metadata'
+import ControllerRouter from '../common/ControllerRouter'
+
+type TMethodType = 'get' | 'post' | 'put' | 'delete'
 
 const Controller = (filePath: string) => {
   return (targetClass: { new(...args: any): any }) => {
     Object.getOwnPropertyNames(targetClass.prototype).forEach(name => {
       if(name !== 'constructor') {
-        console.log(Reflect.getMetadata('path', targetClass.prototype, name))
-        console.log(Reflect.getMetadata('type', new targetClass(), name))
+        const path = Reflect.getMetadata('path', targetClass.prototype, name);
+        const type: TMethodType = Reflect.getMetadata('type', targetClass.prototype, name);
+        const methodFn = targetClass.prototype[name]
+        if(path && type) {
+          ControllerRouter.controllerRouter.app.context.rootRouter[type](filePath ? filePath + path : path, methodFn)
+        }
       }
     })
   }
@@ -16,7 +23,6 @@ const methodFn = (type: string) => {
     return (targetClass: Object, methodName: string, desc: PropertyDescriptor) => {
       Reflect.defineMetadata('path', realPath, targetClass, methodName)
       Reflect.defineMetadata('type', type, targetClass, methodName)
-      desc.value()
     }
   }
 }
