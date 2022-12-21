@@ -2,7 +2,7 @@ import Koa from 'koa';
 import { koaBody } from 'koa-body';
 import KoaJson from 'koa-json';
 
-import RouterLoader from './common/RouterLoader';
+import ControllerRouter from './common/ControllerRouter';
 import errorMiddleware from './middleware/error.middleware';
 
 const app = new Koa();
@@ -10,7 +10,7 @@ app.use(koaBody());
 app.use(KoaJson());
 
 app.use(errorMiddleware)
-RouterLoader.routerLoader.init(app)
+ControllerRouter.controllerRouter.init(app)
 
 
 app.listen(3000, () => {

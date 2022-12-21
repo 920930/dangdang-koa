@@ -12,6 +12,7 @@ export default class RouterLoader {
     this.app.use(this.router.routes())
     const list = this.getFilePath();
     this.getRouteInfo(list);
+    // this.app
   }
   getFilePath(){
     // const dir2 = path.join(__dirname, '../rouetr');
