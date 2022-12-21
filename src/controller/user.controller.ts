@@ -1,10 +1,14 @@
-import { Controller, Get } from "../decorator"
+import { Controller, Get, Post } from "../decorator"
 import type { Context } from 'koa'
 
-@Controller()
+@Controller('user.controller')
 class UserController {
   @Get('/user')
   async index(ctx: Context){
-    console.log('index')
+    return 'index'
+  }
+  @Post('/store')
+  async store(ctx: Context){
+    return 'store'
   }
 }

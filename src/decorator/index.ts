@@ -1,16 +1,21 @@
 import 'reflect-metadata'
 
-const Controller = () => {
-  return (target: { new(...args: any): any }) => {
-    const tar = new target();
+const Controller = (filePath: string) => {
+  return (targetClass: { new(...args: any): any }) => {
+    Object.getOwnPropertyNames(targetClass.prototype).forEach(name => {
+      if(name !== 'constructor') {
+        console.log(Reflect.getMetadata('path', targetClass.prototype, name))
+        console.log(Reflect.getMetadata('type', new targetClass(), name))
+      }
+    })
   }
 }
 
 const methodFn = (type: string) => {
   return (realPath: string) => {
-    return (target: Object, methodName: string, desc: PropertyDescriptor) => {
-      Reflect.defineMetadata('path', realPath, target, methodName)
-      Reflect.defineMetadata('type', type, target, methodName)
+    return (targetClass: Object, methodName: string, desc: PropertyDescriptor) => {
+      Reflect.defineMetadata('path', realPath, targetClass, methodName)
+      Reflect.defineMetadata('type', type, targetClass, methodName)
       desc.value()
     }
   }
