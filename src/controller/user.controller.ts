@@ -1,11 +1,15 @@
 import { Controller, Get, Post } from "../decorator"
 import type { Context } from 'koa'
 
-@Controller('/app')
+@Controller('/user')
 class UserController {
-  @Get('/user')
+  @Get('/')
   async index(ctx: Context){
     ctx.body = 'user index'
+  }
+  @Get('/:id')
+  async show(ctx: Context){
+    ctx.body = 'user show'
   }
   @Post('/store')
   async store(ctx: Context){

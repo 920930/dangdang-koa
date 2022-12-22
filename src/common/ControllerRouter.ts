@@ -4,34 +4,32 @@ import type Koa from 'koa';
 import KoaRouter from 'koa-router'
 
 export default class ControllerRouter {
-  static controllerRouter: ControllerRouter = new ControllerRouter()
   app!: Koa
   router: KoaRouter = new KoaRouter()
+  static controllerRouter = new ControllerRouter()
 
-  async init(app: Koa){
-    this.app = app
-    // this.app.context.rootRouter.prefix('')
-    this.app.context.rootRouter = this.router;
+  init(app: Koa){
+    this.app = app;
     this.app.use(this.router.routes())
-    const list = this.getFilePath();
-    this.getRouteInfo(list);
+    this.app.context.rootRouter = this.router
+    const list = this.getFilePath()
+    this.getConRouter(list)
   }
 
   getFilePath(){
-    const filePath = path.join(process.cwd() + '/src/controller');
+    const filePath = path.join(process.cwd(), '/src/controller');
     const files = fs.readdirSync(filePath)
-    const list: string[] = [];
-    files.forEach(file => {
-      const arr = file.split('.')
+    const list: string[] = []
+    files.forEach(item => {
+      const arr = item.split('.')
       if(arr.includes('controller')) {
-        list.push(`${filePath}\\${file}`)
+        list.push(`${filePath}\\${item}`)
       }
     })
     return list;
   }
 
-  getRouteInfo(list: string[]){
-    // 通过import()方法引入文件，引入文件后 无需其他操作，装饰器自动执行
+  getConRouter(list: string[]){
     list.forEach(item => import(item))
   }
 }
