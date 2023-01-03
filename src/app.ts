@@ -1,11 +1,13 @@
 import Koa from 'koa';
 import { koaBody } from 'koa-body';
 import KoaJson from 'koa-json';
+import core from '@koa/cors'
 
 import ControllerRouter from './common/ControllerRouter';
 import errorMiddleware from './middleware/error.middleware';
 
 const app = new Koa();
+app.use(core())
 app.use(koaBody());
 app.use(KoaJson());
 

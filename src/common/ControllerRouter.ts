@@ -10,6 +10,7 @@ export default class ControllerRouter {
 
   init(app: Koa){
     this.app = app;
+    this.router.prefix('/api')
     this.app.use(this.router.routes())
     this.app.context.rootRouter = this.router
     const list = this.getFilePath()

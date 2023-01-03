@@ -3,21 +3,6 @@ import ControllerRouter from '../common/ControllerRouter'
 
 type TMethodType = 'get' | 'post' | 'put' | 'delete'
 
-// const Controller = (filePath: string) => {
-//   return (targetClass: { new(...args: any): any }) => {
-//     Object.getOwnPropertyNames(targetClass.prototype).forEach(name => {
-//       if(name !== 'constructor') {
-//         const path: string = Reflect.getMetadata('path', targetClass.prototype, name);
-//         const type: TMethodType = Reflect.getMetadata('type', targetClass.prototype, name);
-//         const methodFn = targetClass.prototype[name]
-//         if(path && type) {
-//           ControllerRouter.controllerRouter.app.context.rootRouter[type](filePath ? filePath + path : path, methodFn)
-//         }
-//       }
-//     })
-//   }
-// }
-
 const Controller = (realPath: string = '/') => {
   return (targetClass: { new(...args: any): any }) => {
     Object.getOwnPropertyNames(targetClass.prototype).forEach(item => {
@@ -28,7 +13,6 @@ const Controller = (realPath: string = '/') => {
         if(path && type){
           let lastPath = realPath.length > 1 ? realPath : realPath === '/' ? '' : '';
           lastPath += path === '/' ? '' : path;
-          console.log(lastPath)
           ControllerRouter.controllerRouter.router[type](lastPath, methodFn)
         }
       }
